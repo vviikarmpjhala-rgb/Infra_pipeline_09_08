@@ -1,1 +1,1 @@
-variable "dev_vnets"{}
+variable "dev_vnets" {}
