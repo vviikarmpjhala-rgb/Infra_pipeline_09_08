@@ -91,4 +91,4 @@ jobs:
       # =========================
       - name: Terraform Plan
         working-directory: Environments/dev
-        run: terraform plan
+        run: terraform plan -input=false
