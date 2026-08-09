@@ -1,9 +1,9 @@
 variable "pdev_rgs" {
-    type= map(any)
+  type = map(any)
 }
 variable "pdev_vnets" {
-    type= map(any)
+  type = map(any)
 }
 variable "pdev_subnets" {
-    type=map(any)
+  type = map(any)
 }
