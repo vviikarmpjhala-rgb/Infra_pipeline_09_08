@@ -1,48 +1,34 @@
-name: Terraform Feature Branch Plan
-
+name: Terraform Plan
 on:
   push:
     branches:
       - features_mod
-
+  workflow_dispatch:
 permissions:
   id-token: write
   contents: read
-
 jobs:
   terraform-plan:
-    name: Terraform Plan
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: Environments/dev
-
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-
-      - name: Azure Login - OIDC
+      - name: Azure Login
         uses: azure/login@v2
         with:
           client-id: ${{ vars.AZURE_CLIENT_ID }}
           tenant-id: ${{ vars.AZURE_TENANT_ID }}
           subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Verify Azure Login
-        run: az account show
-
-      - name: Terraform Version
-        run: terraform version
-
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
       - name: Terraform Init
+        working-directory: Environments/dev
         run: terraform init
-
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
       - name: Terraform Validate
+        working-directory: Environments/dev
         run: terraform validate
-
       - name: Terraform Plan
+        working-directory: Environments/dev
         run: terraform plan
